@@ -13,21 +13,21 @@ TEST_CASE("linked_list")
 {
     	//exercise 2
     	int sum;
-      node *ns = NULL;
+      node *ns = NULL; //changed all sentinel to NULL
     	ns = make_node (1,
 			make_node (2,
 				   make_node (3,
 					      make_node (4,
 							  make_node (5,
-								    &SENTINEL_node)))));
+								    NULL)))));
 
 	sum = sum_squares (ns);	/* sum should equal 55 */
   	REQUIRE(sum==55);
-  	free_list(ns);
+  ns =free_list(ns);
 	sum=sum_squares(ns);
 	REQUIRE(sum==0);
 
-	ns = make_node (1,&SENTINEL_node);
+	ns = make_node (1, NULL);
 	sum=sum_squares(ns);
 	REQUIRE(sum==1);
 	
@@ -36,18 +36,18 @@ TEST_CASE("linked_list")
 	node *mns = map (ns, square);
 	sum=sum_squares(ns);
 	REQUIRE(sum==1);
-	free_list(ns);
+	ns = free_list(ns); //added ns 
   	ns = make_node (1,
 			make_node (2,
 				   make_node (3,
-					      &SENTINEL_node)));
+					      NULL)));
 	//ns is 1->2->3
   	mns = map (ns, square);
 	//ns is 1->4->9
-	sum=sum_squares(ns);
+	sum=sum_squares(mns); //added 'm'
 	//1+16+81 = 98
 	REQUIRE(sum==98);
-	free_list(ns);
+	ns = free_list(mns);
 }
 
 TEST_CASE("btree")
@@ -68,6 +68,7 @@ TEST_CASE("btree")
      //       /     \        /
      //      7      12      42
    */
+
   struct tree_node *root = NULL;
 
   root = Initialize (root);
@@ -163,7 +164,7 @@ TEST_CASE("btree")
   REQUIRE (Contains (42, root) == 0);
   REQUIRE (Contains (16, root) == 1);
 
-  REQUIRE (Full (root) == 1);
+  REQUIRE (Full (root) == 0); //changed from 1 to 0, since it can never be full
 
   root = Remove (7, root);
 
